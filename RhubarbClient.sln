@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RhubarbCloudClient", "RhubarbCloudClient\RhubarbCloudClient.csproj", "{478034D9-2EC7-4083-A456-CA2E4C7F7AD0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataModel", "DataModel\DataModel.csproj", "{FD94ABFC-1A26-49EB-B0F9-7F7DEB192C30}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		TestDP|Any CPU = TestDP|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{478034D9-2EC7-4083-A456-CA2E4C7F7AD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{478034D9-2EC7-4083-A456-CA2E4C7F7AD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{478034D9-2EC7-4083-A456-CA2E4C7F7AD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{478034D9-2EC7-4083-A456-CA2E4C7F7AD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{478034D9-2EC7-4083-A456-CA2E4C7F7AD0}.TestDP|Any CPU.ActiveCfg = Debug|Any CPU
+		{478034D9-2EC7-4083-A456-CA2E4C7F7AD0}.TestDP|Any CPU.Build.0 = Debug|Any CPU
+		{FD94ABFC-1A26-49EB-B0F9-7F7DEB192C30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD94ABFC-1A26-49EB-B0F9-7F7DEB192C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD94ABFC-1A26-49EB-B0F9-7F7DEB192C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD94ABFC-1A26-49EB-B0F9-7F7DEB192C30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD94ABFC-1A26-49EB-B0F9-7F7DEB192C30}.TestDP|Any CPU.ActiveCfg = TestDP|Any CPU
+		{FD94ABFC-1A26-49EB-B0F9-7F7DEB192C30}.TestDP|Any CPU.Build.0 = TestDP|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F3279A28-39B4-4648-819B-40F955C548E3}
+	EndGlobalSection
+EndGlobal
