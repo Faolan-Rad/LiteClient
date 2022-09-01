@@ -12,19 +12,15 @@ namespace RhubarbCloudClient
         private long _totalBytes;
 
         public long Bytes
-        {
-            get
-            {
-                return _totalBytes;
-            }
-            set
-            {
-                _totalBytes = value;
-                AmountOfBytesChanged?.Invoke(_totalBytes);
-            }
-        }
+		{
+			get => _totalBytes;
+			set {
+				_totalBytes = value;
+				AmountOfBytesChanged?.Invoke(_totalBytes);
+			}
+		}
 
-        public void ChangeState(ProgressState progressState)
+		public void ChangeState(ProgressState progressState)
         {
             CurrentState = progressState;
             StateChange?.Invoke(progressState);

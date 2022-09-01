@@ -60,12 +60,7 @@ namespace RhubarbCloudClient
 
 		public async Task<Uri> GetRecordDownloadURL(Guid target) {
 			var req = await GetRecordAccesses(target);
-			if (req.Error) {
-				return null;
-			}
-			else {
-				return new Uri(req.Data.TempURL);
-			}
+			return req.Error ? null : new Uri(req.Data.TempURL);
 		}
 	}
 }

@@ -98,9 +98,7 @@ namespace RhubarbCloudClient
 		private void AddMsgsToStart(Guid targetDM, params UserDM.MSG[] mSGs) {
 			try {
 				var field = _dms[targetDM].DM.Msgs;
-				if (field is null) {
-					field = Array.Empty<UserDM.MSG>();
-				}
+				field ??= Array.Empty<UserDM.MSG>();
 				var startSize = _dms[targetDM].DM.Msgs?.Length ?? 0;
 				Array.Resize(ref field, startSize + mSGs.Length);
 				for (var i = 0; i < mSGs.Length; i++) {
@@ -118,9 +116,7 @@ namespace RhubarbCloudClient
 		private void AddMsgs(Guid targetDM, params UserDM.MSG[] mSGs) {
 			try {
 				var field = _dms[targetDM].DM.Msgs;
-				if (field is null) {
-					field = Array.Empty<UserDM.MSG>();
-				}
+				field ??= Array.Empty<UserDM.MSG>();
 				var startSize = _dms[targetDM].DM.Msgs?.Length ?? 0;
 				Array.Resize(ref field, startSize + mSGs.Length);
 				for (var i = 0; i < mSGs.Length; i++) {
