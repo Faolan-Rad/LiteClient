@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace RhubarbCloudClient
 {
-    public class ProgressableSttreamContent : HttpContent
+    public class ProgressableStreamContent : HttpContent
     {
         private const int DEFAULT_BUFFER_SIZE = 4096;
-        private readonly Stream content;
-        private readonly int bufferSize;
-        private bool contentConsumed;
+        private readonly Stream _content;
+        private readonly int _bufferSize;
+        private bool _contentConsumed;
         public ProgressTracker ProgressTracker { get; private set; }
 
-        public ProgressableSttreamContent(Stream content, ProgressTracker progressTracke = null) : this(content, DEFAULT_BUFFER_SIZE, progressTracke) { }
+        public ProgressableStreamContent(Stream content, ProgressTracker progressTracke = null) : this(content, DEFAULT_BUFFER_SIZE, progressTracke) { }
 
-        public ProgressableSttreamContent(Stream content, int buffersize, ProgressTracker progressTracke = null)
+        public ProgressableStreamContent(Stream content, int buffersize, ProgressTracker progressTracke = null)
         {
             if (content is null)
             {
@@ -30,24 +30,17 @@ namespace RhubarbCloudClient
                 throw new ArgumentOutOfRangeException(nameof(buffersize));
             }
 
-            this.content = content;
-            bufferSize = buffersize;
+            _content = content;
+            _bufferSize = buffersize;
             ProgressTracker = progressTracke??new ProgressTracker();
         }
 
         private void PrepareContent()
         {
-            if (contentConsumed)
+            if (_contentConsumed)
             {
-                if (content.CanSeek)
-                {
-                    content.Position = 0;
-                }
-                else
-                {
-                    throw new InvalidOperationException("net_http_content_stream_already_read");
-                }
-                contentConsumed = true;
+                _content.Position = _content.CanSeek ? 0 : throw new InvalidOperationException("net_http_content_stream_already_read");
+				_contentConsumed = true;
             }
         }
 
@@ -57,25 +50,31 @@ namespace RhubarbCloudClient
             PrepareContent();
             return Task.Run(() =>
             {
-                var buffer = new byte[bufferSize];
-                var size = content.Length;
+                var buffer = new byte[_bufferSize];
+                var size = _content.Length;
                 var uploaded = 0;
                 ProgressTracker.ChangeState(ProgressState.PendingUpload);
-                using (content) while (true)
+                using (_content) {
+					while (true)
                     {
-                        var length = content.Read(buffer, 0, buffer.Length);
-                        if (length <= 0) break;
-                        ProgressTracker.Bytes = uploaded += length;
+                        var length = _content.Read(buffer, 0, buffer.Length);
+                        if (length <= 0) {
+							break;
+						}
+
+						ProgressTracker.Bytes = uploaded += length;
                         stream.Write(buffer, 0, length);
                         ProgressTracker.ChangeState(ProgressState.Uploading);
                     }
-                ProgressTracker.ChangeState(ProgressState.PendingResponse);
+				}
+
+				ProgressTracker.ChangeState(ProgressState.PendingResponse);
             });
         }
 
         protected override bool TryComputeLength(out long length)
         {
-            length = content.Length;
+            length = _content.Length;
             return true;
         }
 
@@ -83,7 +82,7 @@ namespace RhubarbCloudClient
         {
             if (disposing)
             {
-                content?.Dispose();
+                _content?.Dispose();
             }
             base.Dispose(disposing);
         }

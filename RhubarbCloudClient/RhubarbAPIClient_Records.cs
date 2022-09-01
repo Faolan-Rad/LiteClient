@@ -24,7 +24,7 @@ namespace RhubarbCloudClient
 			var size = data.Length;
 			var req = await CreateRecord(size, publicData, ContentType);
 			if (!req.Error) {
-				var stream = new ProgressableSttreamContent(data, progress);
+				var stream = new ProgressableStreamContent(data, progress);
 				var httpResponse = await HttpClient.PutAsync(new Uri(req.Data.TempUploadURL), stream);
 				if (!httpResponse.IsSuccessStatusCode) {
 					req.Error = true;

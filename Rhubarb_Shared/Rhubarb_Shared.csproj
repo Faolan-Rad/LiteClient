@@ -6,6 +6,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Locales\de.json" />
+    <Content Remove="Locales\en-us.json" />
+    <Content Remove="Locales\en.json" />
+    <Content Remove="Locales\KeyQwerty.json" />
+    <Content Remove="Locales\nl.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Locales\de.json" />
+    <EmbeddedResource Include="Locales\en-us.json" />
+    <EmbeddedResource Include="Locales\en.json" />
+    <EmbeddedResource Include="Locales\KeyQwerty.json" />
+    <EmbeddedResource Include="Locales\nl.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 

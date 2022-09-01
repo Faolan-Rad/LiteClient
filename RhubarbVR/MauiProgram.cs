@@ -6,6 +6,7 @@ using Rhubarb_Shared;
 
 using RhubarbCloudClient;
 using System.Net.Http;
+using System.Reflection;
 
 namespace RhubarbVR
 {
@@ -49,6 +50,12 @@ var targetURI = new Uri("https://api.rhubarbvr.net/");
 				ret.OnLogout += () => ser.GetRequiredService<NavigationManager>().NavigateTo("/Login");
 				return ret;
 			});
+			static IEnumerable<string> GetFiles() {
+				return Assembly.GetAssembly(typeof(LightModeManager))?.GetManifestResourceNames() ?? Array.Empty<string>();
+			}
+			builder.Services.AddScoped<Localisation>((thing) => new DynamicLocalisation(GetFiles, (item) => new StreamReader(Assembly.GetAssembly(typeof(LightModeManager)).GetManifestResourceStream(item)).ReadToEnd(), () => {
+
+			}));
 
 			builder.Services.AddMauiBlazorWebView();
 #if DEBUG
