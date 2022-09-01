@@ -7,6 +7,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RhubarbCloudClient", "Rhuba
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataModel", "DataModel\DataModel.csproj", "{FD94ABFC-1A26-49EB-B0F9-7F7DEB192C30}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhubarb_Shared", "Rhubarb_Shared\Rhubarb_Shared.csproj", "{358F67A1-F9ED-4E02-96D2-E52AEF2AEAA4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rhubarb_Web", "Rhubarb_Web\Rhubarb_Web.csproj", "{0D7443B5-38BF-4CE0-A54F-C474B0480925}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RhubarbVR", "RhubarbVR\RhubarbVR.csproj", "{8340FA99-C992-464A-8FF1-263503DB62C3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{74361A87-40EC-4132-A8C9-BFD5CEF72ECD}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +39,27 @@ Global
 		{FD94ABFC-1A26-49EB-B0F9-7F7DEB192C30}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FD94ABFC-1A26-49EB-B0F9-7F7DEB192C30}.TestDP|Any CPU.ActiveCfg = TestDP|Any CPU
 		{FD94ABFC-1A26-49EB-B0F9-7F7DEB192C30}.TestDP|Any CPU.Build.0 = TestDP|Any CPU
+		{358F67A1-F9ED-4E02-96D2-E52AEF2AEAA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{358F67A1-F9ED-4E02-96D2-E52AEF2AEAA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{358F67A1-F9ED-4E02-96D2-E52AEF2AEAA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{358F67A1-F9ED-4E02-96D2-E52AEF2AEAA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{358F67A1-F9ED-4E02-96D2-E52AEF2AEAA4}.TestDP|Any CPU.ActiveCfg = Debug|Any CPU
+		{358F67A1-F9ED-4E02-96D2-E52AEF2AEAA4}.TestDP|Any CPU.Build.0 = Debug|Any CPU
+		{0D7443B5-38BF-4CE0-A54F-C474B0480925}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D7443B5-38BF-4CE0-A54F-C474B0480925}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D7443B5-38BF-4CE0-A54F-C474B0480925}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D7443B5-38BF-4CE0-A54F-C474B0480925}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D7443B5-38BF-4CE0-A54F-C474B0480925}.TestDP|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D7443B5-38BF-4CE0-A54F-C474B0480925}.TestDP|Any CPU.Build.0 = Debug|Any CPU
+		{8340FA99-C992-464A-8FF1-263503DB62C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8340FA99-C992-464A-8FF1-263503DB62C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8340FA99-C992-464A-8FF1-263503DB62C3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8340FA99-C992-464A-8FF1-263503DB62C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8340FA99-C992-464A-8FF1-263503DB62C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8340FA99-C992-464A-8FF1-263503DB62C3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{8340FA99-C992-464A-8FF1-263503DB62C3}.TestDP|Any CPU.ActiveCfg = Debug|Any CPU
+		{8340FA99-C992-464A-8FF1-263503DB62C3}.TestDP|Any CPU.Build.0 = Debug|Any CPU
+		{8340FA99-C992-464A-8FF1-263503DB62C3}.TestDP|Any CPU.Deploy.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

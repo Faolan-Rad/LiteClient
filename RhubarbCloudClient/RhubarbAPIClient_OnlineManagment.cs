@@ -56,7 +56,7 @@ namespace RhubarbCloudClient
 				using var response = await request.GetResponseAsync();
 				return true;
 			}
-			catch(PlatformNotSupportedException e) {
+			catch(PlatformNotSupportedException) {
 				Console.WriteLine("Is On WASM");
 				Wasm = true;
 				return true;

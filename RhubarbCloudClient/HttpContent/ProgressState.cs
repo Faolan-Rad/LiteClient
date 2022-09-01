@@ -8,5 +8,7 @@
         Dowloading,
         Uploading,
         PendingResponse,
+        Done,
+        Failed,
     }
 }

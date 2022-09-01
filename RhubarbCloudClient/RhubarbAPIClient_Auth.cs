@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.SignalR.Client;
+
 using Newtonsoft.Json;
 
 using RhubarbCloudClient.Model;
@@ -57,7 +58,7 @@ namespace RhubarbCloudClient
 		}
 
 		public async Task UpdateUserStatus(PrivateUserStatus status) {
-			if(_hub is null) {
+			if (_hub is null) {
 				return;
 			}
 			await _hub.InvokeAsync("SetStatus", status);
@@ -99,7 +100,7 @@ namespace RhubarbCloudClient
 		public async Task<HttpDataResponse<string>> RegisterAccount(RUserRegistration rUserRegistration) {
 			return await SendPost(API_PATH + AUTHPATH + "Register", rUserRegistration);
 		}
-		
+
 		public async Task<ServerResponse<PrivateUser>> Login(RAccountLogin rUserLogin) {
 			var req = await SendPostServerResponses<PrivateUser, RAccountLogin>(API_PATH + AUTHPATH + "Login", rUserLogin);
 			ProccessUserLoadin(req);

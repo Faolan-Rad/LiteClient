@@ -12,10 +12,10 @@ namespace RhubarbCloudClient
     public class ProgressableSttreamContent : HttpContent
     {
         private const int DEFAULT_BUFFER_SIZE = 4096;
-        private Stream content;
-        private int bufferSize;
+        private readonly Stream content;
+        private readonly int bufferSize;
         private bool contentConsumed;
-        public ProgressTracker progressTracker { get; private set; }
+        public ProgressTracker ProgressTracker { get; private set; }
 
         public ProgressableSttreamContent(Stream content, ProgressTracker progressTracke = null) : this(content, DEFAULT_BUFFER_SIZE, progressTracke) { }
 
@@ -32,7 +32,7 @@ namespace RhubarbCloudClient
 
             this.content = content;
             bufferSize = buffersize;
-            progressTracker = progressTracke??new ProgressTracker();
+            ProgressTracker = progressTracke??new ProgressTracker();
         }
 
         private void PrepareContent()
@@ -60,16 +60,16 @@ namespace RhubarbCloudClient
                 var buffer = new byte[bufferSize];
                 var size = content.Length;
                 var uploaded = 0;
-                progressTracker.ChangeState(ProgressState.PendingUpload);
+                ProgressTracker.ChangeState(ProgressState.PendingUpload);
                 using (content) while (true)
                     {
                         var length = content.Read(buffer, 0, buffer.Length);
                         if (length <= 0) break;
-                        progressTracker.Bytes = uploaded += length;
+                        ProgressTracker.Bytes = uploaded += length;
                         stream.Write(buffer, 0, length);
-                        progressTracker.ChangeState(ProgressState.Uploading);
+                        ProgressTracker.ChangeState(ProgressState.Uploading);
                     }
-                progressTracker.ChangeState(ProgressState.PendingResponse);
+                ProgressTracker.ChangeState(ProgressState.PendingResponse);
             });
         }
 

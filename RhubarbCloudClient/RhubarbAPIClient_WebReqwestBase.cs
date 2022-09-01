@@ -44,8 +44,8 @@ namespace RhubarbCloudClient
 
 			public bool IsDataGood => HttpResponseMessage?.IsSuccessStatusCode ?? false & Data is not null;
 		}
-		
-		
+
+
 		public async Task<HttpDataResponse<string>> SendPost<T>(string path, T value) {
 			var httpContent = new StringContent(JsonConvert.SerializeObject(value), Encoding.UTF8, "application/json");
 			var request = await HttpClient.PostAsync(path, httpContent);
@@ -70,8 +70,8 @@ namespace RhubarbCloudClient
 			var build = await HttpDataResponse<ServerResponse<T>>.Build(request);
 			return build.IsDataNull ? new ServerResponse<T>(request.StatusCode.ToString()) : build.Data;
 		}
-		public async Task<ServerResponse<T>> SendPostServerResponses<T,P>(string path,P value) {
-			var request = await SendPost<ServerResponse<T>,P>(path,value);
+		public async Task<ServerResponse<T>> SendPostServerResponses<T, P>(string path, P value) {
+			var request = await SendPost<ServerResponse<T>, P>(path, value);
 			return request.IsDataNull ? new ServerResponse<T>(request.HttpResponseMessage.StatusCode.ToString()) : request.Data;
 		}
 	}

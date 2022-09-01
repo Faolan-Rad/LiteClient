@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+	<title>RhubarbVR</title>
+	<base href="/" />
+	<link id="theme" href="/_content/Rhubarb_Shared/css/bootstrap/bootstrap-night.min.css" rel="stylesheet" />
+	<link href="/_content/Rhubarb_Shared/css/app.css" rel="stylesheet" />
+	<link href="RhubarbVR.styles.css" rel="stylesheet" />
+	<script>
+		function UpdateTheme(lightMode) {
+			var link = document.getElementById('theme');
+			if (lightMode) {
+				link.setAttribute('href', '/_content/Rhubarb_Shared/css/bootstrap/bootstrap.min.css');
+			} else {
+				link.setAttribute('href', '/_content/Rhubarb_Shared/css/bootstrap/bootstrap-night.min.css');
+			}
+		}
+	</script>
+</head>
+
+<body>
+
+	<div class="status-bar-safe-area"></div>
+
+	<div id="app">Loading...</div>
+
+	<div id="blazor-error-ui">
+		An unhandled error has occurred.
+		<a href="" class="reload">Reload</a>
+		<a class="dismiss">🗙</a>
+	</div>
+
+	<script src="_framework/blazor.webview.js" autostart="false"></script>
+
+</body>
+
+</html>

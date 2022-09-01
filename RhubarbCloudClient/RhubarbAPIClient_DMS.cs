@@ -49,7 +49,7 @@ namespace RhubarbCloudClient
 			}
 		}
 
-		private readonly Dictionary<Guid, DMManaged> _dms = new Dictionary<Guid, DMManaged>();
+		private readonly Dictionary<Guid, DMManaged> _dms = new();
 
 		public DMManaged GetDM(Guid targetDM) {
 			return _dms[targetDM];
