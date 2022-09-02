@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -88,7 +89,21 @@ namespace RhubarbCloudClient
 			return english;
 		}
 
-		public string GetLocalString(string key) {
+		public string GetLocalString(string key,params object[] prams) {
+			return GetLocalString(key + ";" + string.Join(";", prams.Select((x) => x?.ToString() ?? "NULL")));
+		}
+
+
+		public string GetLocalString(string dataString) {
+			var prams = dataString.Split(';');
+			if (prams.Length == 0) {
+				return "";
+			}
+			var key = prams[0];
+			for (var i = 1; i < prams.Length; i++) {
+				prams[i - 1] = prams[i];
+			}
+			Array.Resize(ref prams, prams.Length - 1);
 			if (string.IsNullOrEmpty(key)) {
 				return "";
 			}
@@ -96,24 +111,24 @@ namespace RhubarbCloudClient
 			if (main is not null) {
 				returnobj = main[key];
 				if (returnobj is not null) {
-					return (string)returnobj;
+					return string.Format((string)returnobj, prams);
 				}
 			}
 			if (parretnfallBack is not null) {
 				returnobj = parretnfallBack[key];
 				if (returnobj is not null) {
-					return (string)returnobj;
+					return string.Format((string)returnobj, prams);
 				}
 			}
 			NeededKeys?.Add(key);
 			if (fallBack is null) {
-				return key;
+				return dataString;
 			}
 			returnobj = fallBack[key];
 			if (returnobj is not null) {
-				return (string)returnobj;
+				return string.Format((string)returnobj, prams);
 			}
-			return key;
+			return dataString;
 		}
 
 		public void LoadLocal() {

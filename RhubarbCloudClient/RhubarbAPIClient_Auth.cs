@@ -54,7 +54,15 @@ namespace RhubarbCloudClient
 			//_hub.On(nameof(MessageNotify), MessageNotify);
 			_hub.On<UserDM.MSG>(nameof(ReceivedMsg), ReceivedMsg);
 			_hub.On<PrivateUserStatus>(nameof(LoadInStatusInfo), LoadInStatusInfo);
+			_hub.Closed += Hub_Closed;
 			_hub.StartAsync().ConfigureAwait(false);
+		}
+
+		private Task Hub_Closed(Exception arg) {
+			if (IsOnline) {
+				UpdateCheckForInternetConnection();
+			}
+			return Task.CompletedTask;
 		}
 
 		public async Task UpdateUserStatus(PrivateUserStatus status) {
@@ -75,7 +83,7 @@ namespace RhubarbCloudClient
 			Console.WriteLine("User Status Loaded");
 			Status = status;
 			status.ClientVersion = Environment.Version.ToString();
-			status.Device = Wasm ? "WASM" : Environment.OSVersion.ToString();
+			status.Device = Environment.OSVersion.ToString();
 			status.ClientCompatibility = ClientCompatibility;
 			await UpdateUserStatus(status);
 		}

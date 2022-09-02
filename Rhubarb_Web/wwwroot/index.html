@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>RhubarbVR</title>
     <base href="/" />
+    <link href="/_content/Rhubarb_Shared/css/bootstrap/bootstrap-icons.css" rel="stylesheet" />
+
     <link id="theme" href="/_content/Rhubarb_Shared/css/bootstrap/bootstrap-night.min.css" rel="stylesheet" />
     <link href="/_content/Rhubarb_Shared/css/app.css" rel="stylesheet" />
 
@@ -15,6 +17,7 @@
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
     <script>
         function UpdateTheme(lightMode) {
+            console.info("Theme Change IsLight:" + lightMode);
             var link = document.getElementById('theme');
             if (lightMode) {
                 link.setAttribute('href', '/_content/Rhubarb_Shared/css/bootstrap/bootstrap.min.css');
@@ -22,17 +25,30 @@
                 link.setAttribute('href', '/_content/Rhubarb_Shared/css/bootstrap/bootstrap-night.min.css');
             }
         }
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            UpdateTheme(false);
-        }
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
             UpdateTheme(!event.matches);
         });
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            UpdateTheme(false);
+        } else {
+            UpdateTheme(true);
+        }
     </script>
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+        <div class='LoadingCube-container'>
+            <div class='cube'>
+                <div class='front'></div>
+                <div class='back'></div>
+                <div class='right'></div>
+                <div class='left'></div>
+                <div class='top'></div>
+                <div class='bottom'></div>
+            </div>
+        </div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.

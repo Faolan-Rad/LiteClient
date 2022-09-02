@@ -27,8 +27,9 @@ namespace RhubarbVR
 #if DEBUG
 			var targetURI = new Uri("http://localhost:5000/");
 #else
-var targetURI = new Uri("https://api.rhubarbvr.net/");
+			var targetURI = new Uri("https://api.rhubarbvr.net/");
 #endif
+			LightModeManager.UseWeb = false;
 			builder.Services.AddScoped<LightModeManager>();
 
 			//TODO: Save Cookies
@@ -48,6 +49,7 @@ var targetURI = new Uri("https://api.rhubarbvr.net/");
 					Console.WriteLine($"Welcome: {user.UserName}");
 				};
 				ret.OnLogout += () => ser.GetRequiredService<NavigationManager>().NavigateTo("/Login");
+				ret.HasGoneOfline+=()=> ser.GetRequiredService<NavigationManager>().NavigateTo("/");
 				return ret;
 			});
 			static IEnumerable<string> GetFiles() {

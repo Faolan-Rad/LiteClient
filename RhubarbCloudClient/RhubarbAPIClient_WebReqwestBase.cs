@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -48,31 +49,96 @@ namespace RhubarbCloudClient
 
 		public async Task<HttpDataResponse<string>> SendPost<T>(string path, T value) {
 			var httpContent = new StringContent(JsonConvert.SerializeObject(value), Encoding.UTF8, "application/json");
-			var request = await HttpClient.PostAsync(path, httpContent);
-			return await HttpDataResponse<string>.BuildString(request);
+			try {
+				var sw = Stopwatch.StartNew();
+				var request = await HttpClient.PostAsync(path, httpContent);
+				sw.Stop();
+				Ping = (int)sw.ElapsedMilliseconds;
+				return await HttpDataResponse<string>.BuildString(request);
+			}
+			catch {
+				await Check();
+				return new HttpDataResponse<string>();
+			}
 		}
 		public async Task<HttpDataResponse<R>> SendPost<R, T>(string path, T value) {
 			var httpContent = new StringContent(JsonConvert.SerializeObject(value), Encoding.UTF8, "application/json");
-			var request = await HttpClient.PostAsync(path, httpContent);
-			return await HttpDataResponse<R>.Build(request);
+			try {
+				var sw = Stopwatch.StartNew();
+				var request = await HttpClient.PostAsync(path, httpContent);
+				sw.Stop();
+				Ping = (int)sw.ElapsedMilliseconds;
+				return await HttpDataResponse<R>.Build(request);
+			}
+			catch {
+				await Check();
+				return new HttpDataResponse<R>();
+			}
 		}
 		public async Task<HttpDataResponse<string>> SendGet(string path) {
-			var request = await HttpClient.GetAsync(path);
-			return await HttpDataResponse<string>.BuildString(request);
+			try {
+				var sw = Stopwatch.StartNew();
+				var request = await HttpClient.GetAsync(path);
+				sw.Stop();
+				Ping = (int)sw.ElapsedMilliseconds;
+				return await HttpDataResponse<string>.BuildString(request);
+			}
+			catch {
+				await Check();
+				return new HttpDataResponse<string>();
+			}
 		}
 		public async Task<HttpDataResponse<R>> SendGet<R>(string path) {
-			var request = await HttpClient.GetAsync(path);
-			return await HttpDataResponse<R>.Build(request);
+			try {
+				var sw = Stopwatch.StartNew();
+				var request = await HttpClient.GetAsync(path);
+				sw.Stop();
+				Ping = (int)sw.ElapsedMilliseconds;
+				return await HttpDataResponse<R>.Build(request);
+			}
+			catch {
+				await Check();
+				return new HttpDataResponse<R>();
+			}
 		}
 
 		public async Task<ServerResponse<T>> SendGetServerResponses<T>(string path) {
-			var request = await HttpClient.GetAsync(path);
-			var build = await HttpDataResponse<ServerResponse<T>>.Build(request);
-			return build.IsDataNull ? new ServerResponse<T>(request.StatusCode.ToString()) : build.Data;
+			try {
+				var sw = Stopwatch.StartNew();
+				var request = await HttpClient.GetAsync(path);
+				sw.Stop();
+				Ping = (int)sw.ElapsedMilliseconds;
+				var build = await HttpDataResponse<ServerResponse<T>>.Build(request);
+				return build.IsDataNull ? new ServerResponse<T>(request.StatusCode.ToString()) : build.Data;
+			}
+			catch (Exception e) {
+				await Check();
+				return new ServerResponse<T>(e.ToString());
+			}
 		}
+
+		public async Task Check() {
+			Ping = await CheckForInternetConnection();
+			IsOnline = Ping != -1;
+			if (!IsOnline) {
+				UpdateCheckForInternetConnection();
+			}
+		}
+
 		public async Task<ServerResponse<T>> SendPostServerResponses<T, P>(string path, P value) {
-			var request = await SendPost<ServerResponse<T>, P>(path, value);
-			return request.IsDataNull ? new ServerResponse<T>(request.HttpResponseMessage.StatusCode.ToString()) : request.Data;
+			try {
+				var httpContent = new StringContent(JsonConvert.SerializeObject(value), Encoding.UTF8, "application/json");
+				var sw = Stopwatch.StartNew();
+				var req = await HttpClient.PostAsync(path, httpContent);
+				sw.Stop();
+				Ping = (int)sw.ElapsedMilliseconds;
+				var request =  await HttpDataResponse<T>.Build(req);
+				return request.IsDataNull ? new ServerResponse<T>(request.HttpResponseMessage.StatusCode.ToString()) : new ServerResponse<T>(request.Data);
+			}
+			catch (Exception e) {
+				await Check();
+				return new ServerResponse<T>(e.ToString());
+			}
 		}
 	}
 }

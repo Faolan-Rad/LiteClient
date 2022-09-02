@@ -1,0 +1,88 @@
+﻿@page "/Login"
+@inject RhubarbAPIClient client
+@inject Localisation loc
+@inject NavigationManager nav
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card-body p-5 text-center">
+                    <EditForm Model="@loginModel" OnValidSubmit="OnValidSubmit">
+                        <DataAnnotationsValidator />
+                        @if (loading)
+                        {
+                            <Loading></Loading>
+                        }
+                        else
+                        {
+                            <RhubarbLogo></RhubarbLogo>
+                        }
+                        <div class="mb-md-5 mt-md-4 pb-5">
+
+                            <h2 class="fw-bold mb-2 text-uppercase">@loc.GetLocalString("Programs.Login.Login")</h2>
+                            @if (error)
+                            {
+                                <h4>@loc.GetLocalString(msg)</h4>
+                            }
+                            <div class="form-outline form-white mb-4">
+                                <InputText @bind-Value="loginModel.Email" type="email" id="typeEmailX" class="form-control form-control-lg" />
+                                <ValidationMessage For="@(() => loginModel.Email)" />
+                                <label class="form-label" for="typeEmailX">@loc.GetLocalString("Programs.Login.Email")</label>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <InputText @bind-Value="loginModel.Password" type="password" id="typePasswordX" class="form-control form-control-lg" />
+                                <ValidationMessage For="@(() => loginModel.Password)" />
+                                <label class="form-label" for="typePasswordX">@loc.GetLocalString("Programs.Login.Password")</label>
+                            </div>
+
+                            <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p>
+
+                            <button disabled="@loading" class="btn btn-outline-light btn-lg px-5" type="submit">
+                                @loc.GetLocalString("Programs.Login.LoginButton")
+                            </button>
+                        </div>
+
+                        <div>
+                            <p class="mb-0">
+                                @loc.GetLocalString("Programs.Login.RegisterText")<text>&nbsp; &nbsp;</text><a href="Register" class="text-white-50 fw-bold">
+                                    @loc.GetLocalString("Programs.Login.RegisterButton")
+                                </a>
+                            </p>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (!client.IsOnline)
+        {
+            nav.NavigateTo("/");
+        }
+    }
+
+    private bool loading;
+    public RAccountLogin loginModel = new RAccountLogin();
+    private bool error;
+    private string msg;
+
+    private async Task OnValidSubmit()
+    {
+        loading = true;
+        var respones = await client.Login(loginModel);
+        if (respones.Error)
+        {
+            error = true;
+            msg = respones.MSG;
+        }
+        loading = false;
+    }
+}

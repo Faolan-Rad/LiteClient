@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -16,18 +17,34 @@ namespace RhubarbCloudClient
 	public partial class RhubarbAPIClient : IDisposable
 	{
 		public bool _isOnline = false;
-		public static bool Wasm { get; private set; } = false;
 
 		public event Action HasGoneOfline;
 		public event Action HasGoneOnline;
+
+		public event Action<int> PingChange;
+
+		private int _ping;
+
+		public int Ping
+		{
+			get => _ping;
+			set { _ping = value; PingChange?.Invoke(value); }
+		}
 
 		public bool IsOnline
 		{
 			get => _isOnline;
 			set {
+				if (_isOnline == value) {
+					return;
+				}
 				if (!value) {
 					IsGoneOfline();
 					HasGoneOfline?.Invoke();
+				}
+				if (value) {
+					IsGoneOnline();
+					HasGoneOnline?.Invoke();
 				}
 				_isOnline = value;
 			}
@@ -41,40 +58,30 @@ namespace RhubarbCloudClient
 			GetMe().ConfigureAwait(false);
 		}
 
-		public static async Task<bool> CheckForInternetConnection(int timeoutMs = 10000, string url = null) {
+		private async Task<int> CheckForInternetConnection() {
 			try {
-				url ??= CultureInfo.InstalledUICulture switch { { Name: var n } when n.StartsWith("fa") => // Iran
-						"http://www.aparat.com", { Name: var n } when n.StartsWith("zh") => // China
-						"http://www.baidu.com",
-					_ =>
-						"http://www.gstatic.com/generate_204",
-				};
-
-				var request = (HttpWebRequest)WebRequest.Create(url);
-				request.KeepAlive = false;
-				request.Timeout = timeoutMs;
-				using var response = await request.GetResponseAsync();
-				return true;
-			}
-			catch(PlatformNotSupportedException) {
-				Console.WriteLine("Is On WASM");
-				Wasm = true;
-				return true;
+				var sw = Stopwatch.StartNew();
+				var req = await HttpClient.GetAsync("/");
+				sw.Stop();
+				return (int)sw.ElapsedMilliseconds;
 			}
 			catch {
 				Console.WriteLine("Is Offline");
-				return false;
+				return -1;
 			}
 		}
 
 		private void UpdateCheckForInternetConnection() {
-			Task.Run(async () => {
-				IsOnline = await CheckForInternetConnection();
-				if (IsOnline) {
-					IsGoneOnline();
-					HasGoneOnline?.Invoke();
-				}
-			});
+			Task.Run(CheckForInternetConnectionLoop);
+		}
+
+		private async Task CheckForInternetConnectionLoop() {
+			Ping = await CheckForInternetConnection();
+			IsOnline = Ping != -1;
+			await Task.Delay(5000);
+			if (!IsOnline) {
+				await CheckForInternetConnectionLoop();
+			}
 		}
 	}
 }

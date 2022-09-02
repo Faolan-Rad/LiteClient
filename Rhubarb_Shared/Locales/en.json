@@ -132,10 +132,26 @@
     "Programs.Login.Login": "Login",
     "Programs.Login.LoginButton": "Login",
     "Programs.Login.Register": "Register",
+    "Programs.Login.RegisterButton": "Register",
+    "Programs.Login.RegisterText": "Don't have an account?",
+
     "Programs.Login.ConfirmPassword": "Confirm Password",
     "Programs.Login.Password": "Password",
     "Programs.Login.Email": "Email",
     "Programs.Login.Username": "Username",
+    "Programs.Login.nullError": "You have to put something in",
+    "API.Auth.Login.Error": "Failed to login",
+    "API.DefaultError": "An unknown failure has occurred",
+    "API.ConcurrencyFailure": "Optimistic concurrency failure, object has been modified",
+    "API.InvalidEmail": "Email {0} is invalid",
+    "API.DuplicateEmail": "Email {0} is already taken",
+    "API.DuplicateUserName": "User Name {0} is already taken",
+    "API.InvalidUserName": "User name {0} is invalid, can only contain letters or digits",
+    "API.PasswordTooShort": "Passwords must be at least {0} characters",
+    "API.UserLockoutNotEnabled": "Lockout is not enabled for this user",
+    "API.Email.Sent": "Email has been sent",
+    "API.Email.NotSent": "Email has failed to be sent",
+
 
     "Programs.Settings.Name": "Settings",
 
@@ -146,5 +162,6 @@
     "Programs.Terminal.Name": "Terminal",
     "Actions.ChangeVR.Enable": "Enter VR",
     "Actions.ChangeVR.Disable": "Leave VR"
+
   }
 }

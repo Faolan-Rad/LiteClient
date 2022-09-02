@@ -13,6 +13,8 @@ namespace Rhubarb_Shared
 		public static event Action LightModeChange;
 		public static bool IsLightMode = false;
 
+		public static bool UseWeb = true;
+
 		private readonly IJSRuntime _js;
 
 		public LightModeManager(IJSRuntime js) {
@@ -22,7 +24,9 @@ namespace Rhubarb_Shared
 		}
 
 		private void LightModeManager_LightModeChange() {
-			_js.InvokeVoidAsync("UpdateTheme", IsLightMode);
+			if (!UseWeb) {
+				_js.InvokeVoidAsync("UpdateTheme", IsLightMode);
+			}
 		}
 
 		public static void Update() {
