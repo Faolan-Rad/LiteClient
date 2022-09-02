@@ -63,9 +63,9 @@ namespace RhubarbVR
 				return ret;
 			});
 			static IEnumerable<string> GetFiles() {
-				return Assembly.GetAssembly(typeof(LightModeManager))?.GetManifestResourceNames() ?? Array.Empty<string>();
+				return Assembly.GetAssembly(typeof(RhubarbAPIClient))?.GetManifestResourceNames() ?? Array.Empty<string>();
 			}
-			builder.Services.AddScoped<Localisation>((thing) => new DynamicLocalisation(GetFiles, (item) => new StreamReader(Assembly.GetAssembly(typeof(LightModeManager)).GetManifestResourceStream(item)).ReadToEnd(), () => {
+			builder.Services.AddScoped<Localisation>((thing) => new DynamicLocalisation(GetFiles, (item) => new StreamReader(Assembly.GetAssembly(typeof(RhubarbAPIClient)).GetManifestResourceStream(item)).ReadToEnd(), () => {
 
 			}));
 
