@@ -2,50 +2,79 @@
 @inject RhubarbAPIClient client
 @inject Localisation loc
 @inject NavigationManager nav
-<div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-            <div class="card bg-dark text-white" style="border-radius: 1rem;">
+
+
+<div class="defaultOnSmallScreen container py-5 h-100">
+    <div class="defaultOnSmallScreen row d-flex justify-content-center align-items-center h-100">
+        <div class="defaultOnSmallScreen col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="defaultOnSmallScreen card bg-dark text-white" style="border-radius: 1rem;">
                 <div class="card-body p-5 text-center">
                     <EditForm Model="@loginModel" OnValidSubmit="OnValidSubmit">
                         <DataAnnotationsValidator />
-                        @if (loading)
-                        {
-                            <Loading></Loading>
-                        }
-                        else
-                        {
-                            <RhubarbLogo></RhubarbLogo>
-                        }
-                        <div class="mb-md-5 mt-md-4 pb-5">
-
-                            <h2 class="fw-bold mb-2 text-uppercase">@loc.GetLocalString("Programs.Login.Login")</h2>
-                            @if (error)
+                        <div class="hideOnSmallScreen">
+                            @if (loading)
                             {
-                                <h4>@loc.GetLocalString(msg)</h4>
+                                <Loading></Loading>
+                            }
+                            else
+                            {
+                                <RhubarbLogo></RhubarbLogo>
+                            }
+                        </div>
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            <h3 class="fw-bold mb-2 text-uppercase">@loc.GetLocalString("Programs.Login.Login")</h3>
+                            @if (!CodeScreen)
+                            {
+                                <div class="form-outline form-white mb-4">
+                                    <label class="form-label" style="text-align: left; width: 100%" for="typeEmailX">@loc.GetLocalString("Programs.Login.Email")</label>
+                                    <InputText @bind-Value="loginModel.Email" type="email" id="typeEmailX" class="form-control form-control-lg" />
+                                    <ValidationMessage For="@(() => loginModel.Email)" />
+                                </div>
                             }
                             <div class="form-outline form-white mb-4">
-                                <InputText @bind-Value="loginModel.Email" type="email" id="typeEmailX" class="form-control form-control-lg" />
-                                <ValidationMessage For="@(() => loginModel.Email)" />
-                                <label class="form-label" for="typeEmailX">@loc.GetLocalString("Programs.Login.Email")</label>
+
+                                @if (error)
+                                {
+                                    <label class="form-label; alert-danger" style="text-align: left; width: 100%; background:initial" for="typePasswordX">@loc.GetLocalString(msg)</label>
+                                }
+                                else
+                                {
+                                    @if (CodeScreen)
+                                    {
+                                        <label class="form-label" style="text-align: left; width: 100%" for="typeCodeX">@loc.GetLocalString("Programs.Login.Code")</label>
+                                    }
+                                    else
+                                    {
+                                        <label class="form-label" style="text-align: left; width: 100%" for="typePasswordX">@loc.GetLocalString("Programs.Login.Password")</label>
+                                    }
+                                }
+                                @if (CodeScreen)
+                                {
+                                    <InputText @bind-Value="loginModel.Code" id="typeCodeX" class="form-control form-control-lg" />
+                                    <ValidationMessage For="@(() => loginModel.Code)" />
+                                }
+                                else
+                                {
+                                    <InputText @bind-Value="loginModel.Password" type="password" id="typePasswordX" class="form-control form-control-lg" />
+                                    <ValidationMessage For="@(() => loginModel.Password)" />
+                                }
                             </div>
-
-                            <div class="form-outline form-white mb-4">
-                                <InputText @bind-Value="loginModel.Password" type="password" id="typePasswordX" class="form-control form-control-lg" />
-                                <ValidationMessage For="@(() => loginModel.Password)" />
-                                <label class="form-label" for="typePasswordX">@loc.GetLocalString("Programs.Login.Password")</label>
+                            <div class="fbtn-group">
+                                @if (!CodeScreen)
+                                {
+                                    <p class="small mb-5 pb-lg-2" style="text-align: left; width: 100%">
+                                        <a class="text-white-50" @onclick="ForgotPasswowrd">@loc.GetLocalString("Programs.Login.Forgot password")</a>
+                                    </p>
+                                }
+                                <button disabled="@loading" class="btn btn-outline-light btn-lg px-5" type="submit">
+                                    @loc.GetLocalString("Programs.Login.LoginButton")
+                                </button>
                             </div>
-
-                            <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p>
-
-                            <button disabled="@loading" class="btn btn-outline-light btn-lg px-5" type="submit">
-                                @loc.GetLocalString("Programs.Login.LoginButton")
-                            </button>
                         </div>
 
                         <div>
                             <p class="mb-0">
-                                @loc.GetLocalString("Programs.Login.RegisterText")<text>&nbsp; &nbsp;</text><a href="Register" class="text-white-50 fw-bold">
+                                @loc.GetLocalString("Programs.Login.RegisterText")<text>&nbsp; &nbsp;</text><a @onclick="NavToRegister" class="text-white-50 fw-bold">
                                     @loc.GetLocalString("Programs.Login.RegisterButton")
                                 </a>
                             </p>
@@ -57,9 +86,8 @@
     </div>
 </div>
 
-
-
 @code {
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -67,21 +95,54 @@
         {
             nav.NavigateTo("/");
         }
+        if(client.IsLogin)
+        {
+            nav.NavigateTo("/Client");
+        }
     }
 
     private bool loading;
     public RAccountLogin loginModel = new RAccountLogin();
     private bool error;
+    private bool CodeScreen;
     private string msg;
+
+    private async Task ForgotPasswowrd()
+    {
+        if (loading)
+        {
+            return;
+        }
+        loading = true;
+        var data = await client.SendForgotPassword(loginModel.Email);
+        error = true;
+        msg = data;
+        loading = false;
+    }
+
+    private void NavToRegister()
+    {
+        nav.NavigateTo("Register");
+    }
 
     private async Task OnValidSubmit()
     {
+        if (loading)
+        {
+            return;
+        }
         loading = true;
         var respones = await client.Login(loginModel);
         if (respones.Error)
         {
             error = true;
             msg = respones.MSG;
+        }
+        if (msg == "API.NeedsCode" && !CodeScreen)
+        {
+            error = false;
+            msg = null;
+            CodeScreen = true;
         }
         loading = false;
     }

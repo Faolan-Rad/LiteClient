@@ -132,8 +132,8 @@ namespace RhubarbCloudClient
 				var req = await HttpClient.PostAsync(path, httpContent);
 				sw.Stop();
 				Ping = (int)sw.ElapsedMilliseconds;
-				var request =  await HttpDataResponse<T>.Build(req);
-				return request.IsDataNull ? new ServerResponse<T>(request.HttpResponseMessage.StatusCode.ToString()) : new ServerResponse<T>(request.Data);
+				var request =  await HttpDataResponse<ServerResponse<T>>.Build(req);
+				return request.IsDataNull ? new ServerResponse<T>(request.HttpResponseMessage.StatusCode.ToString()) : request.Data;
 			}
 			catch (Exception e) {
 				await Check();

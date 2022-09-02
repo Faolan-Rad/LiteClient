@@ -19,6 +19,7 @@ namespace RhubarbCloudClient
 	public partial class RhubarbAPIClient : IDisposable
 	{
 		public const string AUTHPATH = "auth/";
+		public string EMAILPATH = "Email/";
 
 		public PrivateUser User { get; private set; }
 		public bool IsLogin => User is not null;
@@ -113,6 +114,16 @@ namespace RhubarbCloudClient
 			var req = await SendPostServerResponses<PrivateUser, RAccountLogin>(API_PATH + AUTHPATH + "Login", rUserLogin);
 			ProccessUserLoadin(req);
 			return req;
+		}
+
+		public async Task<string> SendForgotPassword(string targetEmail) {
+			var req = await SendGet(API_PATH + EMAILPATH + "SendForgotPassword?email=" + targetEmail);
+			return req.Data;
+		}
+
+		public async Task<string> ChangePassword(RChangePassword rChangePassword) {
+			var req = await SendPost<RChangePassword>(API_PATH + EMAILPATH + "ChangePassword", rChangePassword);
+			return req.Data;
 		}
 
 		public async Task GetMe() {

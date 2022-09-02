@@ -1,0 +1,18 @@
+﻿@page "/Client"
+@inject RhubarbAPIClient client
+@inject Localisation loc
+@inject NavigationManager nav
+
+<NavLink href="LogOut" class="btn btn-link">@loc.GetLocalString("API.LogOut")</NavLink>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        if(!client.IsLogin){
+            nav.NavigateTo("/");
+        }
+    }
+
+  
+}

@@ -22,6 +22,9 @@ namespace RhubarbCloudClient
 		private HttpClientHandler HttpClientHandler { get; set; }
 		public CookieContainer Cookies => HttpClientHandler?.CookieContainer;
 		public HttpClient HttpClient;
+		//public static Uri LocalUri => new Uri("http://LocalHost:5000/");
+
+		public static Uri LocalUri => new Uri("http://192.168.1.120:5000/");
 
 		public RhubarbAPIClient(Uri baseAdress, Func<CookieContainer> onRead, Action<CookieContainer> onWrite) {
 			HttpClientHandler = new HttpClientHandler {
@@ -30,7 +33,8 @@ namespace RhubarbCloudClient
 				CookieContainer = onRead()
 			};
 			HttpClient = new HttpClient(HttpClientHandler) {
-				BaseAddress = baseAdress
+				BaseAddress = baseAdress,
+				Timeout = TimeSpan.FromMilliseconds(1000)
 			};
 			OnWrite = onWrite;
 			UpdateCheckForInternetConnection();
@@ -38,6 +42,7 @@ namespace RhubarbCloudClient
 
 		public RhubarbAPIClient(HttpClient httpClient) {
 			HttpClient = httpClient;
+			HttpClient.Timeout = TimeSpan.FromMilliseconds(1000);
 			UpdateCheckForInternetConnection();
 		}
 		public RhubarbAPIClient(Uri baseAdress, string fileName = null) {
@@ -57,6 +62,7 @@ namespace RhubarbCloudClient
 					BaseAddress = baseAdress
 				};
 			}
+			HttpClient.Timeout = TimeSpan.FromMilliseconds(1000);
 			UpdateCheckForInternetConnection();
 		}
 

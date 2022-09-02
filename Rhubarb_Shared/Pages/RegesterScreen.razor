@@ -1,0 +1,122 @@
+﻿@page "/Register"
+@inject RhubarbAPIClient client
+@inject Localisation loc
+@inject NavigationManager nav
+
+
+<div class="defaultOnSmallScreen container py-5 h-100">
+    <div class="defaultOnSmallScreen row d-flex justify-content-center align-items-center h-100">
+        <div class="defaultOnSmallScreen col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="defaultOnSmallScreen card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card-body p-5 text-center">
+                    <EditForm Model="@regerstraitionModel" OnValidSubmit="OnValidSubmit">
+                        <DataAnnotationsValidator />
+                        <div class="hideOnSmallScreen">
+                            @if (loading)
+                            {
+                                <Loading></Loading>
+                            }
+                            else
+                            {
+                                <RhubarbLogo></RhubarbLogo>
+                            }
+                        </div>
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            <h3 class="fw-bold mb-2 text-uppercase">@loc.GetLocalString("Programs.Login.Register")</h3>
+                            <div class="form-outline form-white mb-4">
+                                <label class="form-label" style="text-align: left; width: 100%" for="typeUserNameX">@loc.GetLocalString("Programs.Login.Username")</label>
+                                <InputText @bind-Value="regerstraitionModel.UserName" id="typeUserNameX" class="form-control form-control-lg" />
+                                <ValidationMessage For="@(() => regerstraitionModel.UserName)" />
+                            </div>
+                            <div class="form-outline form-white mb-4">
+                                <label class="form-label" style="text-align: left; width: 100%" for="typeEmailX">@loc.GetLocalString("Programs.Login.Email")</label>
+                                <InputText @bind-Value="regerstraitionModel.Email" type="email" id="typeEmailX" class="form-control form-control-lg" />
+                                <ValidationMessage For="@(() => regerstraitionModel.Email)" />
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                @if (error)
+                                {
+                                    <label class="form-label; alert-danger" style="text-align: left; width: 100%; background:initial" for="typePasswordX">@loc.GetLocalString(msg)</label>
+                                }
+                                else
+                                {
+                                    <label class="form-label" style="text-align: left; width: 100%" for="typePasswordX">@loc.GetLocalString("Programs.Login.Password")</label>
+                                }
+                                <InputText @bind-Value="regerstraitionModel.Password" type="password" id="typePasswordX" class="form-control form-control-lg" />
+                                <ValidationMessage For="@(() => regerstraitionModel.Password)" />
+                            </div>
+                            <div class="form-outline form-white mb-4">
+                                <label class="form-label" style="text-align: left; width: 100%" for="typePasswordConfX">@loc.GetLocalString("Programs.Login.ConfirmPassword")</label>
+                                <InputText @bind-Value="confPassword" type="password" id="typePasswordConfX" class="form-control form-control-lg" />
+                            </div>
+
+                            <button disabled="@loading" class="btn btn-outline-light btn-lg px-5" type="submit">
+                                @loc.GetLocalString("Programs.Login.RegisterButton")
+                            </button>
+                        </div>
+
+                        <div>
+                            <p class="mb-0">
+                                @loc.GetLocalString("Programs.Login.LoginText")<text>&nbsp; &nbsp;</text><a @onclick="NavToLogin" class="text-white-50 fw-bold">
+                                    @loc.GetLocalString("Programs.Login.LoginButton")
+                                </a>
+                            </p>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (!client.IsOnline)
+        {
+            nav.NavigateTo("/");
+        }
+        if (client.IsLogin)
+        {
+            nav.NavigateTo("/Client");
+        }
+    }
+
+    private bool loading;
+    public string confPassword;
+    public RUserRegistration regerstraitionModel = new RUserRegistration();
+    private bool error;
+    private string msg;
+
+    private void NavToLogin()
+    {
+        nav.NavigateTo("Login");
+    }
+
+    private async Task OnValidSubmit()
+    {
+        if (loading)
+        {
+            return;
+        }
+        loading = true;
+        if (confPassword != regerstraitionModel.Password)
+        {
+            error = true;
+            msg = "Programs.Login.MatchPassword";
+            loading = false;
+            return;
+        }
+        var respones = await client.RegisterAccount(regerstraitionModel);
+        error = true;
+        msg = respones?.Data ?? "API.Email.Sent";
+        loading = false;
+        if (msg == "API.Email.Sent")
+        {
+            NavToLogin();
+        }
+    }
+}

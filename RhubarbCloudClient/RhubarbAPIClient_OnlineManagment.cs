@@ -72,7 +72,12 @@ namespace RhubarbCloudClient
 		}
 
 		private void UpdateCheckForInternetConnection() {
-			Task.Run(CheckForInternetConnectionLoop);
+			try {
+				Task.Run(CheckForInternetConnectionLoop);
+			}
+			catch(Exception e) {
+				Console.WriteLine(e);	
+			}
 		}
 
 		private async Task CheckForInternetConnectionLoop() {

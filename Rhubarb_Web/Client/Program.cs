@@ -30,9 +30,9 @@ namespace Rhubarb_Web
 			builder.RootComponents.Add<App>("#app");
 			builder.RootComponents.Add<HeadOutlet>("head::after");
 #if DEBUG
-			var targetURI = new Uri("http://localhost:5000/");
+			var targetURI = RhubarbAPIClient.LocalUri;
 #else
-var targetURI = new Uri("https://api.rhubarbvr.net/");
+			var targetURI = new Uri("https://api.rhubarbvr.net/");
 #endif
 			builder.Services.AddScoped<LightModeManager>();
 

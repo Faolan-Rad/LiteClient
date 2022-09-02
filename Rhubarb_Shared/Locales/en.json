@@ -134,13 +134,21 @@
     "Programs.Login.Register": "Register",
     "Programs.Login.RegisterButton": "Register",
     "Programs.Login.RegisterText": "Don't have an account?",
+    "Programs.Login.LoginText": "Have an account?",
+    "Programs.Login.MatchPassword": "Passwords do not match",
 
     "Programs.Login.ConfirmPassword": "Confirm Password",
     "Programs.Login.Password": "Password",
     "Programs.Login.Email": "Email",
     "Programs.Login.Username": "Username",
+    "Programs.Login.Forgot password": "Forgot password?",
     "Programs.Login.nullError": "You have to put something in",
+    "Programs.Login.Code": "Two Factor Code",
     "API.Auth.Login.Error": "Failed to login",
+    "API.Auth.Login.EmailConf": "Email not confirmed",
+    "API.CodeNotvalid": "Code Not Valid",
+    "API.EnabledAuthenticator": "Authenticator has been Enabled",
+    "API.NeedsCode": "Needs Code",
     "API.DefaultError": "An unknown failure has occurred",
     "API.ConcurrencyFailure": "Optimistic concurrency failure, object has been modified",
     "API.InvalidEmail": "Email {0} is invalid",
@@ -151,7 +159,8 @@
     "API.UserLockoutNotEnabled": "Lockout is not enabled for this user",
     "API.Email.Sent": "Email has been sent",
     "API.Email.NotSent": "Email has failed to be sent",
-
+    "API.PasswordChanged": "Password has been changed",
+    "API.LogOut": "LogOut",
 
     "Programs.Settings.Name": "Settings",
 

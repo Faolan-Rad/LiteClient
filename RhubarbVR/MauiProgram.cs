@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebView.Maui;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.LifecycleEvents;
 
 using Rhubarb_Shared;
@@ -25,7 +26,7 @@ namespace RhubarbVR
 				.ConfigureFonts(fonts => fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular"));
 
 #if DEBUG
-			var targetURI = new Uri("http://localhost:5000/");
+			var targetURI = RhubarbAPIClient.LocalUri;
 #else
 			var targetURI = new Uri("https://api.rhubarbvr.net/");
 #endif
@@ -34,10 +35,19 @@ namespace RhubarbVR
 
 			//TODO: Save Cookies
 			builder.Services
-				.AddScoped(sp => sp
-					.GetRequiredService<IHttpClientFactory>()
-					.CreateClient("API"))
-				.AddHttpClient("API", client => client.BaseAddress = targetURI);
+#if ANDROID
+				.AddScoped(sp => {
+					var client = new HttpClient(new Xamarin.Android.Net.AndroidMessageHandler());
+					client.BaseAddress = targetURI;
+					return client;
+				});
+#else
+				.AddScoped(sp => {
+					var client = new HttpClient();
+					client.BaseAddress = targetURI;
+					return client;
+				});
+#endif
 			builder.Services.AddScoped(ser => {
 				ser.GetRequiredService<NavigationManager>().NavigateTo("/");
 				ser.GetService<LightModeManager>();

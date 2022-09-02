@@ -1,0 +1,12 @@
+﻿@page "/LogOut"
+@inject RhubarbAPIClient client
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await client.LogOut();
+    }
+
+  
+}
