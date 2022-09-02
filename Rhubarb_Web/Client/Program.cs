@@ -5,14 +5,12 @@ using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
 using Rhubarb_Shared;
 
-using Rhubarb_Web;
-
 using RhubarbCloudClient;
 
 using System.Net.Http;
 using System.Reflection;
 
-namespace Rhubarb_Web
+namespace Rhubarb_Web.Client
 {
 	public class Program
 	{

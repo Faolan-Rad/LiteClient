@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RhubarbCloudClient\RhubarbCloudClient.csproj" />
+    <ProjectReference Include="..\..\RhubarbVR\RhubarbCloudClient\RhubarbCloudClient.csproj" />
     <ProjectReference Include="..\Rhubarb_Shared\Rhubarb_Shared.csproj" />
   </ItemGroup>
 
