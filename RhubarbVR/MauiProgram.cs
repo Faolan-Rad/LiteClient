@@ -49,15 +49,11 @@ namespace RhubarbVR
 				});
 #endif
 			builder.Services.AddScoped(ser => {
-				ser.GetRequiredService<NavigationManager>().NavigateTo("/");
 				ser.GetService<LightModeManager>();
 				UpdateTheme(Application.Current.RequestedTheme == AppTheme.Light);
 				Application.Current.RequestedThemeChanged += (e, a) => UpdateTheme(a.RequestedTheme == AppTheme.Light);
 				var ret = new RhubarbAPIClient(ser.GetRequiredService<HttpClient>());
-				ret.OnLogin += (user) => {
-					ser.GetRequiredService<NavigationManager>().NavigateTo("/Client");
-					Console.WriteLine($"Welcome: {user.UserName}");
-				};
+				ret.OnLogin += (user) => Console.WriteLine($"Welcome: {user.UserName}");
 				ret.OnLogout += () => ser.GetRequiredService<NavigationManager>().NavigateTo("/Login");
 				ret.HasGoneOfline+=()=> ser.GetRequiredService<NavigationManager>().NavigateTo("/");
 				return ret;

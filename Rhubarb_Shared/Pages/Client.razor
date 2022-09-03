@@ -1,18 +1,248 @@
 ﻿@page "/Client"
+@page "/Client/{Category}"
+@page "/Client/{Category}/{SubCategory}"
+
 @inject RhubarbAPIClient client
 @inject Localisation loc
 @inject NavigationManager nav
 
-<NavLink href="LogOut" class="btn btn-link">@loc.GetLocalString("API.LogOut")</NavLink>
+
+<div class="RClientMain">
+    @if (client.IsLogin)
+    {
+        <!-- SideNav -->
+        <div class="RSideBarHodler">
+            <div class="RGroupsSideBar NoBar RGray2">
+                <div class="d-flex flex-column p-1">
+                    <a @onclick="OpenAtMessages">
+                        <div class="RGroupItem rounded-circle btn-outline-dark border">
+                            @if (IsMessages)
+                            {
+                                <div class="ROpen"></div>
+
+                            }
+                            else
+                            {
+                                <div class="RClosed"></div>
+                            }
+                            <i class="bi bi-chat-text"></i>
+                        </div>
+                    </a>
+                    <a @onclick="OpenAtMe">
+                        <div class="RGroupItem rounded-circle btn-outline-dark border">
+                            @if (IsUser)
+                            {
+                                <div class="ROpen"></div>
+                            }
+                            else
+                            {
+                                <div class="RClosed"></div>
+                            }
+                            <i class="bi bi-person"></i>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="RGroupItem rounded-circle btn-outline-dark border">
+                            <div class="RClosed"></div>
+                            <img class="RAvatarIcon" src="https://cdn.discordapp.com/avatars/316545903718694913/d6d3be103051b0aa698d6abc61614322.webp" />
+                            <p class="RhuBadge">33</p>
+                        </div>
+                    </a>
+
+                    <div class="RWDash RGray3 rounded"></div>
+                    <ul class="nav nav-pills nav-flush flex-column text-center">
+                        <li class="nav-item">
+                            <a href="/">
+                                <div class="RGroupItem rounded-circle btn-outline-dark border">
+                                    <div class="RClosed"></div>
+                                    <i class="bi bi-plus"></i>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="RElementeBar NoBar RGray1">
+                @if (IsUser || IsGroup)
+                {
+                    <div class="text-center p-1 m-1">
+                        @if (IsUser)
+                        {
+                            <h4>@client.User.UserName</h4>
+                        }
+                        else
+                        {
+                            <h4>Group Name Here</h4>
+                        }
+                    </div>
+                    <div class="btn-outline-dark border p-1 m-1 text-center" style="border-radius:20px">
+                        <div class="container">
+                            <div>@StorageUsedString</div>
+                            <div class="progress m-1">
+                                <div class="progress-bar" role="progressbar" style="width: @StoragePresent%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                @if (IsMessages)
+                {
+                    <div class="text-center p-1 m-1">
+                        <h4>@loc.GetLocalString("Messaging.Messages")</h4>
+                    </div>
+                    <div class="btn-outline-dark border p-1 m-1" style="border-radius:20px">
+                        <div class="RUserFriend">
+                            <div class="RAvatarMsgIcon border">
+                                <i class="bi bi-plus"></i>
+                            </div>
+                            <p style="margin-top:-30px;    margin-left: 55px;">@loc.GetLocalString("Messaging.CreateDm")</p>
+                        </div>
+                    </div>
+                    <div class="btn-outline-dark border p-1 m-1" style="border-radius:20px">
+                        <div class="RUserFriend">
+                            <div class="RAvatarMsgIcon border">
+                                <i class="bi bi-plus"></i>
+                            </div>
+                            <p style="margin-top:-30px;    margin-left: 55px;">@loc.GetLocalString("Messaging.CreateGroupDm")</p>
+                        </div>
+                    </div>
+                    <div class="RWDash RGray3 rounded"></div>
+                    @for (int i = 0; i < 10; i++)
+                    {
+                        <div class="btn-outline-dark border p-1 m-1" style="border-radius:20px">
+                            <div class="RUserFriend">
+                                <img class="RAvatarMsgIcon" src="https://cdn.discordapp.com/avatars/316545903718694913/d6d3be103051b0aa698d6abc61614322.webp" />
+                                <div class="RhuBadgeOnline"></div>
+                                <div class="RhuBadgeOverLay"></div>
+                                <p class="RUserName">Jeana has a realy name</p>
+                                <p class="RSessionName">Jeanas fun sessffsefsefsefsefesf</p>
+                                <a class="RRemoveMsg">
+                                    <i class="bi bi-x-lg"></i>
+                                </a>
+                            </div>
+                        </div>
+                    }
+
+                }
+            </div>
+        </div>
+        <div class="RCenterBody">
+            Trains Go Here
+        </div>
+    }
+    else
+    {
+        <LoadingScreen></LoadingScreen>
+    }
+</div>
 
 @code {
-    protected override async Task OnInitializedAsync()
+    public bool IsMessages => Category.ToLower() == "@messages";
+
+    public bool IsUser => Category.ToLower() == "@me";
+
+    public bool IsGroup => !IsUser && !IsMessages;
+
+    public void OpenAtMe()
     {
-        await base.OnInitializedAsync();
-        if(!client.IsLogin){
-            nav.NavigateTo("/");
+        nav.NavigateTo("/Client/@me");
+    }
+    public void OpenAtMessages()
+    {
+        nav.NavigateTo("/Client/@messages");
+    }
+    public float StoragePresent
+    {
+        get
+        {
+            try
+            {
+                var used = client.User?.UsedBytes ?? 0;
+                var total = client.User?.TotalBytes ?? 0;
+                if (IsGroup)
+                {
+                    //Todo:Get group storage
+                }
+                var pre = used / total;
+                if (float.IsInfinity(pre))
+                {
+                    pre = 0;
+                }
+                return pre;
+            }
+            catch
+            {
+                return 100;
+            }
         }
     }
 
-  
+
+    public string StorageUsedString
+    {
+        get
+        {
+            var used = client.User?.UsedBytes ?? 0;
+            var total = client.User?.TotalBytes ?? 0;
+            if (IsGroup)
+            {
+                //Todo:Get group storage
+            }
+            return loc.GetLocalString("Free.Of", FileSizeFormatter.FormatSize(total - used), FileSizeFormatter.FormatSize(total));
+        }
+    }
+
+
+    [Parameter]
+    public string Category { get; set; }
+    [Parameter]
+    public string SubCategory { get; set; }
+
+    public void LocalUserLoad()
+    {
+        Console.WriteLine("LocalUserLoad");
+    }
+
+    public void LoadGorup()
+    {
+        Console.WriteLine("LoadGorup");
+    }
+
+    public void LoadDataInit()
+    {
+        if (Category?.ToLower() == "@me")
+        {
+            LocalUserLoad();
+        }
+        if (Category?.ToLower() == "@messages")
+        {
+            LocalUserLoad();
+        }
+        else
+        {
+            if (client.IsPartOfGroup(Category))
+            {
+                LoadGorup();
+            }
+            else
+            {
+                nav.NavigateTo("/Client/@me");
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        client.OnLogout += () =>
+        {
+            nav.NavigateTo("/");
+        };
+        client.OnLogin += (user) =>
+        {
+            StateHasChanged();
+            LoadDataInit();
+        };
+        LoadDataInit();
+    }
 }

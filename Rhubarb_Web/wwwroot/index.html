@@ -7,33 +7,13 @@
     <title>RhubarbVR</title>
     <base href="/" />
     <link href="/_content/Rhubarb_Shared/css/bootstrap/bootstrap-icons.css" rel="stylesheet" />
-
-    <link id="theme" href="/_content/Rhubarb_Shared/css/bootstrap/bootstrap-night.min.css" rel="stylesheet" />
+    <link href="/_content/Rhubarb_Shared/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="/_content/Rhubarb_Shared/css/app.css" rel="stylesheet" />
 
     <link href="Rhubarb_Web.styles.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
-    <script>
-        function UpdateTheme(lightMode) {
-            console.info("Theme Change IsLight:" + lightMode);
-            var link = document.getElementById('theme');
-            if (lightMode) {
-                link.setAttribute('href', '/_content/Rhubarb_Shared/css/bootstrap/bootstrap.min.css');
-            } else {
-                link.setAttribute('href', '/_content/Rhubarb_Shared/css/bootstrap/bootstrap-night.min.css');
-            }
-        }
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            UpdateTheme(!event.matches);
-        });
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            UpdateTheme(false);
-        } else {
-            UpdateTheme(true);
-        }
-    </script>
 </head>
 
 <body>
@@ -57,6 +37,29 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script src="https://cdn.jsdelivr.net/npm/darkreader@4.9.39/darkreader.js" integrity="sha256-6yL7wxnldMPwT7vOtWPa5lFwglfSUr0GoRZ49TiKxMM=" crossorigin="anonymous"></script>
+    <script>
+        function UpdateTheme(lightMode) {
+            console.info("Theme Change IsLight:" + lightMode);
+            if (lightMode) {
+                DarkReader.disable();
+            } else {
+                DarkReader.enable({
+                    brightness: 100,
+                    contrast: 90,
+                    sepia: 10
+                });
+            }
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            UpdateTheme(!event.matches);
+        });
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            UpdateTheme(false);
+        } else {
+            UpdateTheme(true);
+        }
+    </script>
 </body>
 
 </html>

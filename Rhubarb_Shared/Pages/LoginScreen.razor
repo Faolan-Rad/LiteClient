@@ -7,7 +7,7 @@
 <div class="defaultOnSmallScreen container py-5 h-100">
     <div class="defaultOnSmallScreen row d-flex justify-content-center align-items-center h-100">
         <div class="defaultOnSmallScreen col-12 col-md-8 col-lg-6 col-xl-5">
-            <div class="defaultOnSmallScreen card bg-dark text-white" style="border-radius: 1rem;">
+            <div class="defaultOnSmallScreen card" style="border-radius: 1rem;">
                 <div class="card-body p-5 text-center">
                     <EditForm Model="@loginModel" OnValidSubmit="OnValidSubmit">
                         <DataAnnotationsValidator />
@@ -63,10 +63,10 @@
                                 @if (!CodeScreen)
                                 {
                                     <p class="small mb-5 pb-lg-2" style="text-align: left; width: 100%">
-                                        <a class="text-white-50" @onclick="ForgotPasswowrd">@loc.GetLocalString("Programs.Login.Forgot password")</a>
+                                        <a class="text-black-50" @onclick="ForgotPasswowrd">@loc.GetLocalString("Programs.Login.Forgot password")</a>
                                     </p>
                                 }
-                                <button disabled="@loading" class="btn btn-outline-light btn-lg px-5" type="submit">
+                                <button disabled="@loading" class="btn btn-outline-dark btn-lg px-5" type="submit">
                                     @loc.GetLocalString("Programs.Login.LoginButton")
                                 </button>
                             </div>
@@ -74,7 +74,7 @@
 
                         <div>
                             <p class="mb-0">
-                                @loc.GetLocalString("Programs.Login.RegisterText")<text>&nbsp; &nbsp;</text><a @onclick="NavToRegister" class="text-white-50 fw-bold">
+                                @loc.GetLocalString("Programs.Login.RegisterText")<text>&nbsp; &nbsp;</text><a @onclick="NavToRegister" class="text-black-50 fw-bold">
                                     @loc.GetLocalString("Programs.Login.RegisterButton")
                                 </a>
                             </p>

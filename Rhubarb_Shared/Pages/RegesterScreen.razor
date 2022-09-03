@@ -7,7 +7,7 @@
 <div class="defaultOnSmallScreen container py-5 h-100">
     <div class="defaultOnSmallScreen row d-flex justify-content-center align-items-center h-100">
         <div class="defaultOnSmallScreen col-12 col-md-8 col-lg-6 col-xl-5">
-            <div class="defaultOnSmallScreen card bg-dark text-white" style="border-radius: 1rem;">
+            <div class="defaultOnSmallScreen card" style="border-radius: 1rem;">
                 <div class="card-body p-5 text-center">
                     <EditForm Model="@regerstraitionModel" OnValidSubmit="OnValidSubmit">
                         <DataAnnotationsValidator />
@@ -51,14 +51,14 @@
                                 <InputText @bind-Value="confPassword" type="password" id="typePasswordConfX" class="form-control form-control-lg" />
                             </div>
 
-                            <button disabled="@loading" class="btn btn-outline-light btn-lg px-5" type="submit">
+                            <button disabled="@loading" class="btn btn-outline-dark btn-lg px-5" type="submit">
                                 @loc.GetLocalString("Programs.Login.RegisterButton")
                             </button>
                         </div>
 
                         <div>
                             <p class="mb-0">
-                                @loc.GetLocalString("Programs.Login.LoginText")<text>&nbsp; &nbsp;</text><a @onclick="NavToLogin" class="text-white-50 fw-bold">
+                                @loc.GetLocalString("Programs.Login.LoginText")<text>&nbsp; &nbsp;</text><a @onclick="NavToLogin" class="text-black-50 fw-bold">
                                     @loc.GetLocalString("Programs.Login.LoginButton")
                                 </a>
                             </p>

@@ -67,7 +67,6 @@ a, .btn-link {
 
 
 .defaultOnSmallScreen {
-
 }
 
 .hideOnSmallScreen {
@@ -79,6 +78,7 @@ a, .btn-link {
         height: 45px;
         visibility: hidden;
     }
+
     .defaultOnSmallScreen {
         position: fixed;
         box-sizing: initial;
@@ -339,4 +339,258 @@ a, .btn-link {
     100% {
         transform: rotate(0deg);
     }
+}
+
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    cursor: help;
+}
+
+span {
+    visibility: hidden;
+    position: absolute;
+    width: 120px;
+    bottom: 50%;
+    left: 100%;
+    margin-left: -60px;
+    background-color: #363636;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    z-index: 1;
+}
+
+    span::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+.tooltip-wrapper:hover span {
+    visibility: visible;
+}
+
+
+
+.NoBar {
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+}
+
+    .NoBar::-webkit-scrollbar {
+        display: none; /* Safari and Chrome */
+    }
+
+
+.RGray1 {
+    background-color: rgb(250, 250, 250)
+}
+
+.RGray2 {
+    background-color: rgb(240, 240, 240)
+}
+
+.RGray3 {
+    background-color: rgb(230, 230, 230)
+}
+
+.RGray4 {
+    background-color: rgb(220, 220, 220)
+}
+
+.RWDash {
+    width: 80%;
+    height: 5px;
+    margin-left: calc(20% / 2);
+}
+
+
+.RGroupItem:hover
+.RClosed {
+    height: 25px;
+    transition: ease-in 0.1s;
+}
+
+
+.RClosed {
+    position: absolute;
+    margin-left: -82px;
+    width: 15px;
+    height: 10px;
+    border-radius: 50px;
+    background-color: rgb(200, 200, 200);
+    transition: ease-in 0.1s;
+}
+
+.ROpen {
+    position: absolute;
+    margin-left: -82px;
+    width: 15px;
+    height: 40px;
+    border-radius: 50px;
+    background-color: rgb(200, 200, 200);
+    transition: ease-in 0.1s;
+}
+
+
+.RhuBadge {
+    margin-left:-10px;
+    margin-top: 45px;
+    background-color: rgb(245, 0, 0);
+    color: white;
+    font-size: 12px;
+    border-radius: 50px;
+    padding: 4px;
+    width: 25px;
+    height: 25px;
+}
+
+.RRemoveMsg {
+    position: relative;
+    top:-110px;
+    margin-left: 180px;
+    display: none;
+}
+
+.RUserFriend:hover
+.RRemoveMsg {
+    display: initial;
+}
+
+
+
+.RhuBadgeOverLay {
+    position:relative;
+    margin-left: 33px;
+    margin-top: -17px;
+    background-color: rgb(226, 226, 226);
+    color: white;
+    font-size: 15px;
+    border-radius: 50px;
+    width: 20px;
+    height: 20px;
+}
+
+.RhuBadgeOnline {
+    position: relative;
+    margin-left: 36px;
+    margin-top: -10px;
+    background-color: rgb(0, 245, 0);
+    color: white;
+    font-size: 15px;
+    border-radius: 50px;
+    width: 15px;
+    height: 15px;
+    z-index:100;
+}
+
+.RUserFriend {
+    width: 100%;
+    height: 50px;
+}
+
+.RAvatarMsgIcon {
+    border-radius: 100%;
+    margin-top: 5px;
+    margin-left: 5px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+}
+
+.RUserFriend:hover
+.RUserName {
+    max-width: 110px;
+}
+
+.RUserFriend:hover
+.RSessionName {
+    max-width: 110px;
+}
+
+.RUserName {
+    position:relative;
+    margin-left: 55px;
+    top: -50px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 150px;
+}
+
+.RSessionName {
+    position: relative;
+    margin-left: 60px;
+    top: -65px;
+    font-size: 12px;
+    font-weight: 100;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 130px;
+}
+
+.RAvatarIcon {
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+}
+
+.RGroupItem {
+    width: 60px;
+    height: 60px;
+    margin-top: 5px;
+    margin-left: 5px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+}
+
+
+.RClientMain {
+    height: 100vh;
+    width: 100vw;
+    left: 0px;
+    top: 0px;
+}
+
+.RCenterBody {
+    margin-left: 300px;
+    width: calc(100vw - 300px);
+}
+
+.RSideBarHodler {
+    position: absolute;
+    width: 300px;
+    height: 100%;
+}
+
+.RGroupsSideBar {
+    position: absolute;
+    width: 75px;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.RElementeBar {
+    margin-left: 75px;
+    width: 225px;
+    height: 100%;
+    overflow-y: scroll;
 }
