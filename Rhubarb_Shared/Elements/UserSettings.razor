@@ -1,0 +1,15 @@
+﻿@inject RhubarbAPIClient client
+@inject Localisation loc
+@inject NavigationManager nav
+<h2>dwadawda</h2>
+
+<div class="RWDashLarge RGray3 rounded"></div>
+<button class="btn btn-outline-dark btn-lg px-5" @onclick=UserLogOut>
+    @loc.GetLocalString("API.LogOut")
+</button>
+@code {
+    private void UserLogOut(){
+        nav.NavigateTo("logout");
+    }
+
+}

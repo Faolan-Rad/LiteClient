@@ -1,0 +1,121 @@
+﻿@using DataModel.Enums
+@inject NavigationManager nav
+@if (CurrentDM == Dm.DM.Id.ToString())
+{
+    <div class="btn-outline-dark border p-1 m-1 active" style="border-radius:20px" onclick=OpenDM>
+        <div class="RUserFriend">
+            <img class="RAvatarMsgIcon" src="@assetLoc" />
+            @if (ShowStatus)
+            {
+                @switch (userStatus)
+                {
+                    case UserStatus.Offline:
+                        <div class="RhuBadgeOffline"></div>
+                        break;
+
+                    case UserStatus.Online:
+                        <div class="RhuBadgeOnline"></div>
+                        break;
+
+                    case UserStatus.DoNotDisturb:
+                        <div class="RhuBadgeDoNotDisturb"></div>
+                        break;
+
+                    case UserStatus.Streaming:
+                        <div class="RhuBadgeStreaming"></div>
+                        break;
+
+                    case UserStatus.Idle:
+                        <div class="RhuBadgeIdle"></div>
+                        break;
+                }
+                <div class="RhuBadgeOverLay"></div>
+            }
+            <p class="RUserName">@dmName</p>
+            <p class="RSessionName">@currentSession</p>
+            <a class="RRemoveMsg">
+                <i class="bi bi-x-lg"></i>
+            </a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="btn-outline-dark border p-1 m-1" style="border-radius:20px" onclick=OpenDM>
+        <div class="RUserFriend">
+            <img class="RAvatarMsgIcon" src="@assetLoc" />
+            @if (ShowStatus)
+            {
+                @switch (userStatus)
+                {
+                    case UserStatus.Offline:
+                        <div class="RhuBadgeOffline"></div>
+                        break;
+
+                    case UserStatus.Online:
+                        <div class="RhuBadgeOnline"></div>
+                        break;
+
+                    case UserStatus.DoNotDisturb:
+                        <div class="RhuBadgeDoNotDisturb"></div>
+                        break;
+
+                    case UserStatus.Streaming:
+                        <div class="RhuBadgeStreaming"></div>
+                        break;
+
+                    case UserStatus.Idle:
+                        <div class="RhuBadgeIdle"></div>
+                        break;
+                }
+                <div class="RhuBadgeOverLay"></div>
+            }
+            <p class="RUserName">@dmName</p>
+            <p class="RSessionName">@currentSession</p>
+            <a class="RRemoveMsg">
+                <i class="bi bi-x-lg"></i>
+            </a>
+        </div>
+    </div>
+}
+@code {
+    [Parameter]
+    public RhubarbAPIClient.DMManaged Dm { get; set; }
+    [Parameter]
+    public string CurrentDM { get; set; }
+
+    Uri assetLoc;
+    UserStatus userStatus;
+    string currentSession;
+    string dmName;
+    bool ShowStatus;
+
+    public void OpenDM()
+    {
+        nav.NavigateTo($"/Client/@messages/{Dm.DMid}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        if (Dm is null)
+        {
+            return;
+        }
+        if (Dm.IsUserDm)
+        {
+            ShowStatus = true;
+            var user = await Dm.GetUser();
+            user.BindDataUpdate((data) =>
+            {
+                dmName = data.UserName;
+            });
+            assetLoc = await Dm.DMAsset();
+            user.BindStatusUpdate((data) =>
+             {
+                 userStatus = data.Status;
+                 currentSession = data.CustomStatusMsg;
+             });
+        }
+    }
+}

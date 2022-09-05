@@ -17,5 +17,8 @@
         if(client.IsLogin){
             nav.NavigateTo("/Client/@me");
         }
+        if(client.IsOnline){
+            nav.NavigateTo("/login");
+        }
     }
 }
