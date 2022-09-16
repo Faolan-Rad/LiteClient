@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
-
+using Microsoft.AspNetCore.Components.WebAssembly.Services;
 using Rhubarb_Shared;
 
 using RhubarbCloudClient;
@@ -33,7 +33,6 @@ namespace Rhubarb_Web.Client
 			var targetURI = new Uri("https://api.rhubarbvr.net/");
 #endif
 			builder.Services.AddScoped<LightModeManager>();
-
 
 			builder.Services
 				.AddTransient<CookieHandler>()

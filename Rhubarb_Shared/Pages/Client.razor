@@ -165,17 +165,14 @@
                             </div>
                         </div>
                     }
-                    else
-                    {
-                        <div class="btn-outline-dark border p-1 m-1" style="border-radius:20px" @onclick="CreateDM">
-                            <div class="RUserFriend">
-                                <div class="RAvatarMsgIcon border">
-                                    <i class="bi bi-plus"></i>
-                                </div>
-                                <p style="margin-top:-30px;    margin-left: 55px;">@loc.GetLocalString("Messaging.CreateDm")</p>
+                    <div class="btn-outline-dark border p-1 m-1" style="border-radius:20px" @onclick="CreateDM">
+                        <div class="RUserFriend">
+                            <div class="RAvatarMsgIcon border">
+                                <i class="bi bi-plus"></i>
                             </div>
+                            <p style="margin-top:-30px;    margin-left: 55px;">@loc.GetLocalString("Messaging.CreateDm")</p>
                         </div>
-                    }
+                    </div>
                     <div class="RWDash RGray3 rounded"></div>
                     @foreach (var item in client.GetDms())
                     {
@@ -198,11 +195,7 @@
             }
             @if (IsMessages)
             {
-                @if (IsCreateDM)
-                {
-                    <CreateDM></CreateDM>
-                }
-                else if (IsSubRoot)
+                if (IsSubRoot)
                 {
                     <UsersRelations></UsersRelations>
                 }
@@ -247,7 +240,7 @@
     }
     public void CreateDM()
     {
-        nav.NavigateTo("/Client/@messages/CreateDM");
+
     }
     public float StoragePresent
     {
