@@ -39,12 +39,18 @@ namespace Rhubarb_Web.Client
 				.AddScoped(sp => sp
 					.GetRequiredService<IHttpClientFactory>()
 					.CreateClient("API"))
-				.AddHttpClient("API", client => client.BaseAddress = targetURI).AddHttpMessageHandler<CookieHandler>();
+				.AddHttpClient("API", client => { client.BaseAddress = targetURI; client.Timeout = TimeSpan.FromSeconds(90); }).AddHttpMessageHandler<CookieHandler>();
 			builder.Services.AddScoped(ser => {
 				ser.GetService<LightModeManager>();
 				var ret = new RhubarbAPIClient(ser.GetRequiredService<HttpClient>());
 				ret.OnLogin += (user) => Console.WriteLine($"Welcome: {user.UserName}");
-				ret.OnLogout += () => ser.GetRequiredService<NavigationManager>().NavigateTo("/Login");
+				ret.OnLogout += () => {
+					var path = new Uri(ser.GetRequiredService<NavigationManager>().Uri).PathAndQuery;
+
+					if (path.ToLower().StartsWith("Client") || path == "/" || string.IsNullOrEmpty(path)) {
+						ser.GetRequiredService<NavigationManager>().NavigateTo("/Login");
+					}
+				};
 				ret.HasGoneOfline += () => ser.GetRequiredService<NavigationManager>().NavigateTo("/");
 				return ret;
 			});
