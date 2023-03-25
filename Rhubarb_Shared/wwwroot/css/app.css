@@ -645,6 +645,28 @@ span {
     height: 100%;
 }
 
+.Open > .RSideBarHodler {
+    margin-left: 0px;
+    transition: 2s linear all;
+}
+
+.Open > .RCenterBody {
+    margin-left: 300px;
+    width: calc(100vw - 300px);
+    transition: 2s linear all;
+}
+
+.Close > .RSideBarHodler {
+    margin-left: -300px;
+    transition: 2s linear all;
+}
+
+.Close > .RCenterBody {
+    margin-left: 10px;
+    width: calc(100vw - 10px);
+    transition: 2s linear all;
+}
+
 .RGroupsSideBar {
     position: absolute;
     width: 75px;

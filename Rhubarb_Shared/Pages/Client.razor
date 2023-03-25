@@ -1,17 +1,20 @@
 ﻿@page "/Client"
 @page "/Client/{Category}"
 @page "/Client/{Category}/{SubCategory}"
+@using System.Runtime.InteropServices;
 
 @inject RhubarbAPIClient client
 @inject Localisation loc
 @inject NavigationManager nav
 
 
-<div class="RClientMain">
+<div class="RClientMain @(SideBar ? "Open" : "Close")"
+    @ondrag="ScreenDrag">
+
     @if (client.IsLogin)
     {
         <!-- SideNav -->
-        <div class="RSideBarHodler">
+        <div id="sidebar" class="RSideBarHodler">
             <div class="RGroupsSideBar NoBar RGray2">
                 <div class="d-flex flex-column p-1">
                     <a @onclick="OpenAtMessages">
@@ -210,9 +213,41 @@
     {
         <LoadingScreen></LoadingScreen>
     }
+
+
 </div>
 
 @code {
+
+    public void ScreenDrag(DragEventArgs dragEventArgs)
+    {
+        var moveX = dragEventArgs.MovementX;
+        if(moveX > 5)
+        {
+            _side_bar_ui = true;
+        }
+        if (moveX < -5)
+        {
+            _side_bar_ui = false;
+        }
+    }
+
+    private bool _side_bar_ui = false;
+
+    public bool SideBar
+    {
+        get
+        {
+            if (OperatingSystem.IsWindows() || OperatingSystem.IsFreeBSD() || OperatingSystem.IsMacCatalyst() || OperatingSystem.IsLinux())
+            {
+                return true;
+            }
+            return _side_bar_ui;
+        }
+    }
+
+    public bool IsMobile;
+
     public bool IsMessages => Category?.ToLower() == "@messages";
 
     public bool IsUser => Category?.ToLower() == "@me";
